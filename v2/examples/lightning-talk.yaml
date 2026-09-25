@@ -1,0 +1,74 @@
+deck:
+  title: "Espressif Latest Technology Update"
+  language: ja
+  audience: customer
+  duration_min: 8
+  theme: espressif-dark
+  author: "Field Application Engineer"
+  company: "Espressif Systems"
+  date: "2026"
+  delivery_mode: standard
+  kicker: "LATEST TECHNOLOGY UPDATE"
+
+slides:
+  - type: cover
+    id: cover
+    eyebrow: "LIGHTNING TALK · 2026"
+    title: "Espressif Systems\n最新テクノロジー"
+    subtitle: "高性能 SoC、Connectivity、Edge AI を短時間で俯瞰"
+
+  - type: section
+    title: "新しい SoC ポートフォリオ"
+    subtitle: "用途とシステム要件から最適な SoC を選択"
+
+  - type: product_compare
+    title: "主力 SoC を用途別に比較"
+    subtitle: "以下の値はサンプルです。実案件では必ず最新公式資料で再確認してください。"
+    products:
+      - name: "ESP32-S31"
+        badge: "PERFORMANCE"
+        positioning: "音声・HMI・Edge AI 向け高性能 SoC"
+        highlights:
+          - "高性能アプリケーション処理"
+          - "ディスプレイ／カメラを含む HMI 構成に対応"
+        applications: ["HMI", "Voice", "Edge AI"]
+        image: "images/s31.svg"
+        specs: {"Role": "Main SoC", "Network": "Wi-Fi / Bluetooth"}
+      - name: "ESP32-C5"
+        badge: "CONNECTIVITY"
+        positioning: "デュアルバンド Wi-Fi を活用する接続系 SoC"
+        highlights:
+          - "2.4 GHz / 5 GHz の設計選択肢"
+          - "家電・Gateway の接続性向上"
+        applications: ["Gateway", "Home Appliance", "Wi-Fi Sensing"]
+        image: "images/c5.svg"
+        specs: {"Role": "Connectivity", "Network": "Wi-Fi / Bluetooth"}
+
+  - type: architecture
+    title: "Edge → Connectivity → Cloud"
+    subtitle: "複雑な説明は文章ではなくデータフローとして見せる"
+    nodes:
+      - {id: edge, label: "Edge Device", detail: "Sensor / HMI / Local AI", tone: accent}
+      - {id: network, label: "Connectivity", detail: "Wi-Fi / BLE / 802.15.4", tone: blue}
+      - {id: cloud, label: "Cloud / LLM", detail: "Management / Insight / Agent", tone: green}
+    connections:
+      - {from: edge, to: network, label: "secure data"}
+      - {from: network, to: cloud, label: "IP"}
+
+  - type: three_column
+    title: "提案を 3 つの価値で整理"
+    columns:
+      - title: "Performance"
+        body: "必要な処理性能を必要な場所に配置"
+        bullets: ["Local processing", "Responsive HMI"]
+      - title: "Connectivity"
+        body: "製品要件に応じて無線を選択"
+        bullets: ["Wi-Fi", "Bluetooth", "802.15.4"]
+      - title: "Development"
+        body: "SDK とツールで開発サイクルを短縮"
+        bullets: ["Reusable components", "Automation"]
+
+  - type: ending
+    title: "Thank You"
+    subtitle: "Questions & Discussion"
+    contact: "Espressif Systems"

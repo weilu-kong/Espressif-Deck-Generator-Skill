@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/espressif-deck.schema.json",
+  "title": "Espressif Web Deck",
+  "type": "object",
+  "required": ["deck", "slides"],
+  "properties": {
+    "deck": {
+      "type": "object",
+      "required": ["title"],
+      "properties": {
+        "title": {"type": "string"},
+        "subtitle": {"type": "string"},
+        "language": {"type": "string", "enum": ["ja", "zh", "en"]},
+        "audience": {"type": "string"},
+        "duration_min": {"type": "number", "minimum": 1},
+        "theme": {"type": "string"},
+        "author": {"type": "string"},
+        "company": {"type": "string"},
+        "date": {"type": "string"},
+        "delivery_mode": {"type": "string", "enum": ["quick", "standard", "full"]}
+      },
+      "additionalProperties": true
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["type", "title"],
+        "properties": {
+          "id": {"type": "string"},
+          "type": {
+            "type": "string",
+            "enum": ["cover", "section", "product_compare", "product_detail", "spec_table", "architecture", "image_focus", "three_column", "ending"]
+          },
+          "title": {"type": "string"},
+          "subtitle": {"type": "string"},
+          "eyebrow": {"type": "string"},
+          "body": {"type": "string"},
+          "notes": {"type": "string"},
+          "source": {},
+          "products": {"type": "array"},
+          "product": {"type": "object"},
+          "columns": {"type": "array"},
+          "rows": {"type": "array"},
+          "nodes": {"type": "array"},
+          "connections": {"type": "array"},
+          "groups": {"type": "array"},
+          "image": {"type": "string"},
+          "caption": {"type": "string"},
+          "fit": {"type": "string", "enum": ["contain", "cover"]},
+          "bullets": {"type": "array"}
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,52 @@
+:root {
+  --bg: #090b10;
+  --bg-soft: #11151d;
+  --panel: rgba(255,255,255,.055);
+  --panel-strong: rgba(255,255,255,.085);
+  --line: rgba(255,255,255,.15);
+  --line-strong: rgba(255,255,255,.24);
+  --text: #f7f8fb;
+  --muted: rgba(247,248,251,.68);
+  --muted-2: rgba(247,248,251,.48);
+  --accent: #e73536;
+  --accent-bright: #ff5a5c;
+  --accent-soft: rgba(231,53,54,.16);
+  --success: #61d29b;
+  --blue: #6db7ff;
+  --amber: #f5bd63;
+  --slide-w: 1920px;
+  --slide-h: 1080px;
+  --safe-x: 92px;
+  --safe-top: 78px;
+  --safe-bottom: 72px;
+  --radius: 20px;
+  --radius-sm: 14px;
+  --shadow: 0 24px 70px rgba(0,0,0,.32);
+  --font-sans: Inter, "Helvetica Neue", Arial, "Noto Sans JP", "Noto Sans SC", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; background: #05070b; }
+body { font-family: var(--font-sans); color: var(--text); -webkit-font-smoothing: antialiased; }
+#viewport { position: fixed; inset: 0; display: grid; place-items: center; background: radial-gradient(circle at 75% 15%, rgba(231,53,54,.13), transparent 34%), #05070b; }
+#deck-stage { width: var(--slide-w); height: var(--slide-h); position: relative; transform-origin: center center; overflow: hidden; box-shadow: 0 34px 90px rgba(0,0,0,.45); }
+#deck { width: max-content; height: var(--slide-h); display: flex; transform: translateX(0); transition: transform 420ms cubic-bezier(.2,.8,.2,1); }
+body.motion-off #deck, body.motion-off * { transition: none !important; animation: none !important; }
+.slide { width: var(--slide-w); height: var(--slide-h); position: relative; flex: none; overflow: hidden; background: radial-gradient(circle at 87% 15%, rgba(109,183,255,.07), transparent 31%), linear-gradient(135deg, #0a0d13 0%, #090b10 55%, #10141c 100%); }
+.slide::after { content: ""; position: absolute; inset: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px); background-size: 48px 48px; mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 86%); }
+.slide.accent { background: radial-gradient(circle at 65% 32%, rgba(255,255,255,.17), transparent 28%), linear-gradient(135deg, #c9232c, #e73536 48%, #a91220); }
+.slide.light { color: #141821; background: linear-gradient(135deg, #f8f9fb, #edf0f5); }
+.safe { position: absolute; z-index: 2; left: var(--safe-x); right: var(--safe-x); top: var(--safe-top); bottom: var(--safe-bottom); display: flex; flex-direction: column; min-height: 0; }
+.chrome { display: flex; align-items: center; justify-content: space-between; min-height: 34px; font-family: var(--font-mono); font-size: 16px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted-2); }
+.brand-mark { display: inline-flex; align-items: center; gap: 14px; color: rgba(255,255,255,.92); font-weight: 780; letter-spacing: .08em; }
+.brand-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--accent); box-shadow: 18px 0 0 -5px var(--accent), 31px 0 0 -7px var(--accent); margin-right: 22px; }
+.accent .brand-dot { background: #fff; box-shadow: 18px 0 0 -5px #fff, 31px 0 0 -7px #fff; }
+.page-num { font-family: var(--font-mono); color: var(--muted-2); font-size: 16px; }
+.accent .page-num, .accent .chrome { color: rgba(255,255,255,.68); }
+.eyebrow { margin-top: 38px; color: var(--accent-bright); font-family: var(--font-mono); font-size: 18px; letter-spacing: .12em; font-weight: 700; text-transform: uppercase; }
+.accent .eyebrow { color: rgba(255,255,255,.78); }
+.slide-title { margin: 14px 0 0; max-width: 1500px; font-size: 64px; line-height: 1.08; letter-spacing: -.035em; font-weight: 630; }
+.slide-subtitle { margin: 16px 0 0; max-width: 1450px; color: var(--muted); font-size: 25px; line-height: 1.45; }
+.accent .slide-subtitle { color: rgba(255,255,255,.78); }
+.content { flex: 1; min-height: 0; margin-top: 38px; display: flex; flex-direction: column; justify-content: center; }
+.footer-source { position: absolute; left: var(--safe-x); right: var(--safe-x); bottom: 26px; z-index: 3; color: rgba(247,248,251,.38); font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

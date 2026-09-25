@@ -1,0 +1,8 @@
+@page { size: 13.333333in 7.5in; margin: 0; }
+html, body { width: auto; height: auto; overflow: visible; background: #000; }
+#viewport { position: static; display: block; background: none; }
+#deck-stage { width: 1920px !important; height: 1080px !important; transform: none !important; overflow: visible; box-shadow: none; }
+#deck { display: block !important; width: 1920px !important; height: auto !important; transform: none !important; }
+.slide { width: 1920px !important; height: 1080px !important; page-break-after: always; break-after: page; overflow: hidden; }
+.slide:last-child { page-break-after: auto; break-after: auto; }
+#nav-hint { display: none !important; }

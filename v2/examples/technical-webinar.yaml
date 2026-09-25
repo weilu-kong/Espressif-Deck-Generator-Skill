@@ -1,0 +1,58 @@
+deck:
+  title: "Espressif Technical Webinar"
+  language: ja
+  audience: developer
+  duration_min: 30
+  theme: espressif-dark
+  company: "Espressif Systems"
+  author: "Field Application Engineer"
+  date: "2026"
+  delivery_mode: full
+  kicker: "TECHNICAL WEBINAR"
+slides:
+  - type: cover
+    title: "Espressif Technical Webinar"
+    subtitle: "SoC 選定からシステム構成まで"
+  - type: section
+    title: "Product Selection"
+    subtitle: "性能、無線、消費電力、I/O から設計条件を整理"
+  - type: spec_table
+    title: "比較に必要な項目だけを表にする"
+    subtitle: "以下はレイアウト例。実案件では公式資料の最新値で置換してください。"
+    columns: ["項目", "Product A", "Product B", "Product C"]
+    rows:
+      - ["Main role", "HMI / AI", "Connectivity", "Low power"]
+      - ["Wireless", "Wi-Fi + BT", "Dual-band Wi-Fi", "802.15.4 + BLE"]
+      - ["Target", "Display / Voice", "Gateway / Appliance", "Battery device"]
+  - type: product_detail
+    title: "単一製品は Visual Evidence を大きく"
+    product:
+      name: "Target SoC"
+      badge: "PRODUCT DETAIL"
+      positioning: "1 ページで位置付け、価値、用途、実物を結び付ける"
+      highlights: ["Highlight 1", "Highlight 2", "Highlight 3"]
+      applications: ["Application A", "Application B"]
+      image: "images/product.svg"
+      specs: {"CPU": "Verify", "Wireless": "Verify", "Memory": "Verify"}
+      hero_stat: {value: "3", label: "key engineering messages"}
+  - type: architecture
+    title: "System Architecture"
+    nodes:
+      - {label: "Application", detail: "UI / Logic", tone: accent}
+      - {label: "ESP-IDF", detail: "Drivers / Network / Security", tone: blue}
+      - {label: "Hardware", detail: "SoC / Module / Board", tone: green}
+  - type: image_focus
+    title: "Development Hardware"
+    subtitle: "ボードやモジュールは小さくせず、写真自体を情報として使う"
+    image: "images/devkit.svg"
+    caption: "Official development hardware preferred"
+    bullets: ["Interface access", "RF evaluation", "Fast prototype"]
+  - type: three_column
+    title: "Implementation Plan"
+    columns:
+      - {title: "1. Verify", body: "Datasheet / SDK / certification を確認"}
+      - {title: "2. Prototype", body: "公式 DevKit で機能と RF を検証"}
+      - {title: "3. Productize", body: "量産ハードと FW に落とし込む"}
+  - type: ending
+    title: "Thank You"
+    subtitle: "Technical Q&A"
