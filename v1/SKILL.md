@@ -105,9 +105,12 @@ description: 当用户要求生成、制作、重构、排版或全案交付乐�
 * **拒绝整页大外框**：严禁在每页幻灯片最外层套用大边框（“把每一页都框住，视觉效果很差，像画地为牢”）。
 * **通透的暗黑空间感**：画布整体应保持现代、通透、大气的暗黑/瑞士网格空间感。边框仅允许作为内部独立功能卡片或对比模块的微弱分隔（如 `border: 1px solid rgba(255,255,255,0.14)`），外层仅保留顶部极简 Chrome 条和底部页码。
 
-### 8. 动态/静态双模视效与流光背景规范
-* **氛围流光背景**：封面、封底及关键页面必须配置沉浸式光效（如动态 ASCII 点阵流光场 `ascii-bg` 或呼吸渐变光晕），提升质感与惊艳度。
-* **B 键快捷切换**：交互系统必须内置键盘事件监听，支持按快捷键 `B` 快速在“动态模式 / 静止模式”之间切换，以适应现场低算力设备、投影仪或投屏录制的性能与稳定性需求。
+### 8. 动态/静态双模视效与高对比粒子星座流光场 (Particle Constellation & Glow Mesh)
+* **拒绝隐形/低对比动效**：旧版 ASCII 点阵在暗黑模式下透明度过低、对比度不足，极易成为“不可见的无效动效”。
+* **升级为高可见度发光粒子星座场**：封面与封底必须配置具有强烈科技美感的发光粒子网格与拓扑连线画布（`tech-particles-bg`）：
+  * **暗黑封面 (Dark/Cover)**：采用高饱和乐鑫红（`#ff3b30`）粒子、纯白火花粒子与科技青流光连线，搭配柔和阴影发光（Glow），动感十足。
+  * **红底封底 (Red/Ending)**：采用珍珠高亮白与浅金光斑粒子，浮动交织，营造尊贵大气的谢幕氛围。
+* **B 键快捷切换**：交互系统必须内置键盘事件监听，支持按快捷键 `B` 快速在“动态模式 / 低功耗静止模式”之间切换，以适应现场低算力设备、投影仪或投屏录制的性能与稳定性需求。
 
 ### 9. 硬件信息精准度与生态套件区分法则
 * **最新官方开发板直出**：芯片一旦正式推出官方开发板（如 ESP32-C5-DevKitC-1 已有板），**严禁继续使用前代/其他芯片（如 C6）作为占位或借代**，必须直接以最新官方评估板呈现。
@@ -123,6 +126,17 @@ description: 当用户要求生成、制作、重构、排版或全案交付乐�
 * **ESP32-C5**：2.4 GHz + 5 GHz 双频 Wi-Fi 6 (802.11ax)。
 * **Fast Reflash (IDF 6.1)**：基于 4 KB 扇区差分对比，日常代码修改烧录由 10~15 秒缩短至 1~2 秒。
 
+### 11. 禁止底栏打补丁与机械外框嵌套法则 (Prohibition of Bottom Patchwork Containers)
+* **核心痛点（“底栏打补丁”现象）**：在过往生成中，很多页面为了机械填补垂直空白，会在 2 列/3 列主卡片下方生硬地拼贴一条细长横幅容器（如底部横向 pipeline、次级总结框等）。这种做法会严重割裂整体纵向流线，挤压上方核心卡片的高度，视觉体验非常碎且不高级。
+* **正确做法 1：卡片纵向自然舒展**：彻底拒绝机械拼接的底栏横框。主卡片或网格应当纵向自然拉伸（`flex: 1`），让核心信息与技术特性在卡片内部充分呼吸；卡片内的要点列表、技术参数和落地场景纵向排布充裕舒展，避免任何生硬的底部次级打补丁容器。
+* **正确做法 2：硬件实物与渲染图去框化融入**：芯片、模组、开发板实物图必须直接融入内容卡片，禁止在已有卡片内部画蛇添足地再套一层带有边框和深色背景的硬质小方盒（`.hw-box` 框中框）。应采用 `filter: drop-shadow(...)` 自然浮动呈现，或使用极细半透明分割线（`border-top: 1px solid rgba(255,255,255,0.08)`）自然下沉于卡片底部，保持极致通透与现代感。
+
+### 12. 全功能 ESC 全局幻灯片概览矩阵 (Overview Matrix Modal) 强制实装
+* **强制内置概览模态框**：任何交付的演示文稿必须在 HTML 底层实装全屏概览矩阵组件（`#overview-modal`）。
+* **按 ESC 键平滑呼出**：按下 `ESC` 键触发半透明高斯模糊覆盖层（`backdrop-filter: blur(16px)`），展示所有页面的 4×2（或自适应）缩略卡片网格。
+* **键盘方向键与回车跳转**：支持 `Arrow Left/Right/Up/Down` 在概览卡片之间无缝切换焦点，按 `Enter` 或鼠标点击任意卡片直接无缝跳转至目标幻灯片并自动关闭模态框。
+* **当前位置高亮标示**：当前正在浏览的幻灯片卡片带有显眼的红色高亮边框（`border: 2px solid var(--accent-bright)`）与 `ACTIVE` 角标，一目了然。
+
 ---
 
 ## 三、常用页面母版原型代码 (Slide Archetypes)
@@ -130,29 +144,26 @@ description: 当用户要求生成、制作、重构、排版或全案交付乐�
 直接复制以下母版结构并填充内容，即可保证生成效果达到调优后的最优水准。
 
 ### Archetype 1: 瑞士网格封面 (Cover Slide)
-适合作为演讲开篇，搭载 ASCII 动态点阵呼吸场与严谨的演讲人分行布局。
+适合作为演讲开篇，搭载高可见度科技粒子星座呼吸场（`tech-particles-bg`）与严谨的演讲人分行布局。
 
 ```html
-<section class="slide accent" data-layout="SWISS-COVER-ASCII" data-animate="hero">
-  <div class="brand-logo"><img src="assets/logo-espressif-white.svg" alt="Espressif"></div>
-  <div class="canvas-card" style="background: var(--accent); color: var(--accent-on);">
-    <canvas class="ascii-bg" aria-hidden="true"></canvas>
-    <div class="chrome-min">
-      <div class="l"><span style="color: rgba(255,255,255,0.78);">LIGHTNING TALK · 2026</span></div>
-      <div class="r"><span style="color: rgba(255,255,255,0.78);">01 / 08</span></div>
-    </div>
-    <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-      <span class="kicker no-line" style="margin-bottom: 2.2vh; color: rgba(255,255,255,0.85); font-size: max(15px, 1.05vw); letter-spacing: 0.16em;">
-        LATEST TECH UPDATES 2026
-      </span>
-      <h1 class="h-hero-zh" style="color: #fff; font-size: min(5.6vw, 9.2vh); font-weight: 300; line-height: 1.18; letter-spacing: -0.015em; white-space: nowrap;">
-        Espressif Systems<br>製品アップデートと最新動向
-      </h1>
-      <div style="margin-top: 4.2vh; display: flex; flex-direction: column; align-items: center; gap: 0.8vh; color: rgba(255,255,255,0.92); font-family: var(--mono); font-size: max(18px, 1.25vw); letter-spacing: 0.08em;">
-        <div>楽鑫ジャパン株式会社</div>
-        <div style="font-size: max(16px, 1.1vw); opacity: 0.88;">Field Application Engineer 孔 維魯</div>
-        <div style="font-size: max(16px, 1.1vw); opacity: 0.88;">2026 年 9 月</div>
-      </div>
+<section class="slide accent" data-slide="1">
+  <canvas class="tech-particles-bg" data-theme="cover" aria-hidden="true"></canvas>
+  <div class="chrome-min">
+    <div class="l"><span style="color: rgba(255,255,255,0.88);">LIGHTNING TALK · 2026</span></div>
+    <div class="r"><span style="color: rgba(255,255,255,0.88);">01 / 08</span></div>
+  </div>
+  <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; z-index: 10;">
+    <span class="kicker no-line" style="margin-bottom: 2.2vh; color: rgba(255,255,255,0.92); font-size: max(14px, 0.95vw); letter-spacing: 0.18em;">
+      ESPRESSIF SYSTEMS · LATEST TECH UPDATES 2026
+    </span>
+    <h1 class="h-hero-zh" style="color: #fff; max-width: 85vw; font-size: min(5.4vw, 9.0vh); font-weight: 300; line-height: 1.18; letter-spacing: -0.015em;">
+      Espressif Systems<br>製品アップデートと最新動向
+    </h1>
+    <div style="margin-top: 4.5vh; display: flex; flex-direction: column; align-items: center; gap: 0.8vh; color: rgba(255,255,255,0.95); font-family: var(--mono); font-size: max(16px, 1.1vw); letter-spacing: 0.08em;">
+      <div style="font-weight: 700;">楽鑫ジャパン株式会社</div>
+      <div style="font-size: max(13px, 0.88vw); opacity: 0.88;">Field Application Engineering Team</div>
+      <div style="font-size: max(13px, 0.88vw); opacity: 0.88;">2026 年 9 月</div>
     </div>
   </div>
 </section>
@@ -549,25 +560,22 @@ description: 当用户要求生成、制作、重构、排版或全案交付乐�
 ---
 
 ### Archetype 6: 极简致谢封底 (Ending Slide)
-醒目、大气的红底闭幕页，带 ASCII 点阵呼吸场。
+醒目、大气的红底闭幕页，带高可见度珍珠白/浅金粒子流光场（`tech-particles-bg`）。
 
 ```html
-<section class="slide accent" data-animate="hero">
-  <div class="brand-logo"><img src="assets/logo-espressif-white.svg" alt="Espressif"></div>
-  <div class="canvas-card" style="background: var(--accent); color: var(--accent-on);">
-    <canvas class="ascii-bg" aria-hidden="true"></canvas>
-    <div class="chrome-min">
-      <div class="l"><span style="color: rgba(255,255,255,0.78);">LIGHTNING TALK · SUMMARY</span></div>
-      <div class="r"><span style="color: rgba(255,255,255,0.78);">08 / 08</span></div>
-    </div>
-    <div class="frame col" style="justify-content: center; align-items: center; text-align: center; height: 100%;">
-      <h1 class="h-hero-zh" style="color: #fff; font-size: min(7vw, 12vh); line-height: 1.2; letter-spacing: -0.02em; white-space: nowrap;">
-        ご清聴<br>ありがとうございました
-      </h1>
-      <p class="body" style="margin-top: 3vh; color: rgba(255,255,255,0.88); font-size: max(16px, 1.15vw); letter-spacing: 0.05em;">
-        SoC ハードウェア · ESP-IDF · エッジ AI · 公式 MCP エコシステム
-      </p>
-    </div>
+<section class="slide accent" data-slide="8">
+  <canvas class="tech-particles-bg" data-theme="ending" aria-hidden="true"></canvas>
+  <div class="chrome-min">
+    <div class="l"><span style="color: rgba(255,255,255,0.88);">SUMMARY &amp; CONTACT</span></div>
+    <div class="r"><span style="color: rgba(255,255,255,0.88);">08 / 08</span></div>
+  </div>
+  <div class="col" style="flex: 1; justify-content: center; align-items: center; text-align: center; z-index: 10;">
+    <h1 class="h-hero-zh" style="color: #fff; font-size: min(6.5vw, 11vh); line-height: 1.15; letter-spacing: -0.02em; white-space: nowrap;">
+      ご清聴ありがとうございました
+    </h1>
+    <p style="margin-top: 2.4vh; color: rgba(255,255,255,0.92); font-size: max(16px, 1.15vw); letter-spacing: 0.05em;">
+      SoC ハードウェア · ESP-IDF · 技適認証モジュール · 日本国内 FAE サポート
+    </p>
   </div>
 </section>
 ```
@@ -651,6 +659,369 @@ description: 当用户要求生成、制作、重构、排版或全案交付乐�
     </div>
   </div>
 </section>
+```
+
+---
+
+### Archetype 8: 全功能交互底座与运行时规范 (Interactive Engine & Runtime Architecture)
+每个交付的幻灯片必须在 HTML 底部实装导航提示条、导航圆点、ESC 全局概览矩阵模态框，以及高对比度粒子星座动效引擎。
+
+```html
+  <!-- 底部快捷键提示条与导航圆点 -->
+  <div id="hint">
+    <span><kbd>Esc</kbd> スライド一覧</span>
+    <span><kbd>→</kbd> / <kbd>Space</kbd> 次へ</span>
+    <span><kbd>←</kbd> 前へ</span>
+    <span><kbd>B</kbd> 描画負荷切替 (低電力)</span>
+    <span><kbd>Home</kbd> / <kbd>End</kbd> 最初/最後</span>
+  </div>
+
+  <div id="nav"></div>
+
+  <!-- ESC 全局幻灯片概览矩阵模态框 -->
+  <div id="overview-modal" class="overview-modal" aria-hidden="true">
+    <div class="overview-container">
+      <div class="overview-header">
+        <div style="display: flex; align-items: center; gap: 1vw;">
+          <span class="tag accent">OVERVIEW MATRIX</span>
+          <span style="font-weight: 700; font-size: max(16px, 1.1vw); color: #fff;">スライド全画面一覧</span>
+          <span class="t-meta" style="color: rgba(255,255,255,0.6); font-size: max(11.5px, 0.75vw);">[ESC] またはカードクリックで移動</span>
+        </div>
+        <button id="overview-close" class="overview-close-btn" aria-label="閉じる">✕ ESC 閉じる</button>
+      </div>
+      <div class="overview-grid" id="overview-grid">
+        <!-- JS 动态注入 8 页缩略卡片 -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 概览矩阵与核心控制器样式 -->
+  <style>
+    .overview-modal {
+      position: fixed; inset: 0; background: rgba(10, 12, 16, 0.88);
+      backdrop-filter: blur(16px); z-index: 1000;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .overview-modal.active { opacity: 1; pointer-events: auto; }
+    .overview-container {
+      width: 90vw; max-width: 1400px; height: 82vh;
+      display: flex; flex-direction: column; gap: 2vh;
+    }
+    .overview-header {
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.12); padding-bottom: 1.5vh;
+    }
+    .overview-close-btn {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2);
+      color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 700;
+      padding: 6px 14px; border-radius: 4px; cursor: pointer; transition: all 0.2s;
+    }
+    .overview-close-btn:hover { background: var(--accent); border-color: var(--accent); }
+    .overview-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr);
+      gap: 1.4vw; flex: 1;
+    }
+    .overview-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px; padding: 1.8vh 1.4vw; display: flex; flex-direction: column;
+      justify-content: space-between; cursor: pointer; transition: all 0.22s ease;
+      position: relative; overflow: hidden; aspect-ratio: 16 / 9;
+    }
+    .overview-card:hover {
+      transform: translateY(-4px) scale(1.02); border-color: rgba(255,255,255,0.45);
+      background: rgba(255,255,255,0.08); box-shadow: 0 14px 30px rgba(0,0,0,0.65);
+    }
+    .overview-card.current {
+      border: 2px solid var(--accent-bright); background: rgba(230,0,18,0.14);
+      box-shadow: 0 0 24px rgba(255,59,48,0.4);
+    }
+    .overview-card.current::after {
+      content: "ACTIVE"; position: absolute; top: 10px; right: 10px;
+      font-family: var(--mono); font-size: 10px; font-weight: 700;
+      background: var(--accent); color: #fff; padding: 2px 6px; border-radius: 3px;
+    }
+  </style>
+
+  <!-- 演示控制器与键盘 / ESC 概览脚本 -->
+  <script>
+    (function() {
+      const deck = document.getElementById('deck');
+      const slides = document.querySelectorAll('.slide');
+      const nav = document.getElementById('nav');
+      const overviewModal = document.getElementById('overview-modal');
+      const overviewGrid = document.getElementById('overview-grid');
+      const overviewClose = document.getElementById('overview-close');
+      const totalSlides = slides.length;
+      let currentIndex = 0;
+      let isOverviewOpen = false;
+
+      // 8 页元数据（生成时按实际各页标题与要点填充）
+      const slideMeta = [
+        { num: '01', tag: 'COVER', title: '表紙 · テクノロジーハイライト', desc: '製品アップデートと最新動向' },
+        { num: '02', tag: 'OVERVIEW', title: '製品ポジショニング & アーキテクチャ', desc: '主要諸元と市場優位性' },
+        { num: '03', tag: 'FEATURES', title: 'コアテクノロジー & ハードウェアアクセラレータ', desc: '演算・通信・マルチメディア' },
+        { num: '04', tag: 'APPLICATIONS', title: '日本市場向け推奨ユースケース', desc: '白物家電・スマートホーム・産業機器' },
+        { num: '05', tag: 'LINE-UP', title: 'SoC & 技適認証モジュール', desc: 'パッケージ・フラッシュ・PSRAM 展開' },
+        { num: '06', tag: 'DEV-KIT', title: '公式開発キット & モジュール環境', desc: 'プロトタイプから量産検証まで' },
+        { num: '07', tag: 'ECOSYSTEM', title: 'ESP-IDF & ソフトウェアスタック', desc: '開発支援体制とロードマップ' },
+        { num: '08', tag: 'SUMMARY', title: 'まとめと日本国内サポート体制', desc: 'FAE 伴走 · 回路図レビュー · 問い合わせ窓口' }
+      ];
+
+      // 生成底部圆点
+      slides.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = 'nav-dot' + (idx === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goToSlide(idx));
+        nav.appendChild(dot);
+      });
+      const dots = document.querySelectorAll('.nav-dot');
+
+      // 生成概览卡片
+      slideMeta.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'overview-card' + (idx === 0 ? ' current' : '');
+        card.setAttribute('tabindex', '0');
+        card.innerHTML = `
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span class="tag ${idx === 0 || idx === 7 ? 'accent' : 'blue'}" style="font-size: 10px;">${item.tag}</span>
+              <span class="t-meta" style="color: rgba(255,255,255,0.6); font-size: 11px;">${item.num} / 08</span>
+            </div>
+            <div style="font-weight: 700; font-size: max(13px, 0.88vw); color: #fff; margin-top: 0.8vh; line-height: 1.3;">
+              ${item.title}
+            </div>
+          </div>
+          <div style="font-size: max(11px, 0.74vw); color: rgba(255,255,255,0.7); margin-top: 0.6vh; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 0.6vh;">
+            ${item.desc}
+          </div>
+        `;
+        card.addEventListener('click', () => { goToSlide(idx); closeOverview(); });
+        card.addEventListener('keydown', (e) => { if (e.key === 'Enter') { goToSlide(idx); closeOverview(); } });
+        overviewGrid.appendChild(card);
+      });
+      const overviewCards = document.querySelectorAll('.overview-card');
+
+      function updateSlide(idx) {
+        if (idx < 0) idx = 0;
+        if (idx >= totalSlides) idx = totalSlides - 1;
+        currentIndex = idx;
+        deck.style.transform = `translateX(-${idx * 100}vw)`;
+        slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        overviewCards.forEach((c, i) => c.classList.toggle('current', i === idx));
+      }
+      function goToSlide(idx) { updateSlide(idx); }
+      function nextSlide() { if (currentIndex < totalSlides - 1) updateSlide(currentIndex + 1); }
+      function prevSlide() { if (currentIndex > 0) updateSlide(currentIndex - 1); }
+
+      function openOverview() {
+        isOverviewOpen = true;
+        overviewModal.classList.add('active');
+        overviewModal.setAttribute('aria-hidden', 'false');
+        overviewCards.forEach((c, i) => c.classList.toggle('current', i === currentIndex));
+        overviewCards[currentIndex].focus();
+      }
+      function closeOverview() {
+        isOverviewOpen = false;
+        overviewModal.classList.remove('active');
+        overviewModal.setAttribute('aria-hidden', 'true');
+      }
+      function toggleOverview() { isOverviewOpen ? closeOverview() : openOverview(); }
+
+      overviewClose.addEventListener('click', closeOverview);
+      overviewModal.addEventListener('click', (e) => { if (e.target === overviewModal) closeOverview(); });
+
+      // 键盘导航
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { e.preventDefault(); toggleOverview(); return; }
+        if (isOverviewOpen) {
+          if (['ArrowRight', 'ArrowDown'].includes(e.key)) {
+            e.preventDefault();
+            const nextIdx = (currentIndex + 1) % totalSlides;
+            overviewCards[nextIdx].focus();
+            updateSlide(nextIdx);
+          } else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) {
+            e.preventDefault();
+            const prevIdx = (currentIndex - 1 + totalSlides) % totalSlides;
+            overviewCards[prevIdx].focus();
+            updateSlide(prevIdx);
+          }
+          return;
+        }
+        if (['ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); nextSlide(); }
+        else if (['ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); prevSlide(); }
+        else if (e.key === 'Home') { e.preventDefault(); updateSlide(0); }
+        else if (e.key === 'End') { e.preventDefault(); updateSlide(totalSlides - 1); }
+        else if (e.key === 'b' || e.key === 'B') {
+          document.body.classList.toggle('low-power');
+          window.__lowPowerMode = document.body.classList.contains('low-power');
+          window.dispatchEvent(new CustomEvent('swiss-low-power-change', { detail: { on: window.__lowPowerMode } }));
+        }
+      });
+
+      updateSlide(0);
+    })();
+  </script>
+
+  <!-- 高可见度科技粒子星座与拓扑连线动效引擎 -->
+  <script>
+    (function () {
+      const canvases = [...document.querySelectorAll('canvas.tech-particles-bg')];
+      if (!canvases.length) return;
+
+      const PARTICLE_COUNT = 75;
+      const MAX_DIST = 120;
+
+      class ParticleSystem {
+        constructor(canvas) {
+          this.canvas = canvas;
+          this.ctx = null;
+          this.theme = canvas.getAttribute('data-theme') || 'cover';
+          this.particles = [];
+          this.w = 0; this.h = 0; this.dpr = 1;
+        }
+
+        init() {
+          this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+          const rect = this.canvas.getBoundingClientRect();
+          if (rect.width < 10 || rect.height < 10) return false;
+          this.canvas.width = Math.round(rect.width * this.dpr);
+          this.canvas.height = Math.round(rect.height * this.dpr);
+          this.w = rect.width;
+          this.h = rect.height;
+          this.ctx = this.canvas.getContext('2d');
+          this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+
+          this.particles = [];
+          for (let i = 0; i < PARTICLE_COUNT; i++) {
+            this.particles.push({
+              x: Math.random() * this.w,
+              y: Math.random() * this.h,
+              vx: (Math.random() - 0.5) * 0.7,
+              vy: (Math.random() - 0.5) * 0.7,
+              radius: Math.random() * 2.2 + 1.2,
+              baseAlpha: Math.random() * 0.5 + 0.45,
+              phase: Math.random() * Math.PI * 2,
+              type: Math.random() > 0.8 ? 'spark' : 'node'
+            });
+          }
+          return true;
+        }
+
+        update(t) {
+          for (let p of this.particles) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0) { p.x = 0; p.vx *= -1; }
+            if (p.x > this.w) { p.x = this.w; p.vx *= -1; }
+            if (p.y < 0) { p.y = 0; p.vy *= -1; }
+            if (p.y > this.h) { p.y = this.h; p.vy *= -1; }
+            p.y += Math.sin(t * 1.5 + p.phase) * 0.15;
+          }
+        }
+
+        draw(t) {
+          if (!this.ctx) return;
+          const ctx = this.ctx;
+          ctx.clearRect(0, 0, this.w, this.h);
+          const isEnding = this.theme === 'ending';
+
+          // 绘制拓扑连线
+          for (let i = 0; i < this.particles.length; i++) {
+            for (let j = i + 1; j < this.particles.length; j++) {
+              const p1 = this.particles[i];
+              const p2 = this.particles[j];
+              const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+              if (dist < MAX_DIST) {
+                const ratio = 1 - (dist / MAX_DIST);
+                const alpha = ratio * (isEnding ? 0.35 : 0.28);
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.strokeStyle = isEnding
+                  ? `rgba(255, 255, 255, ${alpha.toFixed(3)})`
+                  : `rgba(255, 75, 85, ${alpha.toFixed(3)})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+              }
+            }
+          }
+
+          // 绘制发光节点
+          for (let p of this.particles) {
+            const pulse = Math.sin(t * 2 + p.phase) * 0.2 + 0.8;
+            const r = p.radius * pulse;
+            const alpha = Math.min(1, p.baseAlpha * pulse);
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+
+            if (isEnding) {
+              ctx.fillStyle = p.type === 'spark'
+                ? `rgba(255, 245, 220, ${alpha.toFixed(3)})`
+                : `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+              ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+              ctx.shadowBlur = p.type === 'spark' ? 8 : 4;
+            } else {
+              if (p.type === 'spark') {
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha.toFixed(3)})`;
+                ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
+                ctx.shadowBlur = 8;
+              } else {
+                ctx.fillStyle = `rgba(255, 59, 48, ${alpha.toFixed(3)})`;
+                ctx.shadowColor = 'rgba(230, 0, 18, 0.8)';
+                ctx.shadowBlur = 6;
+              }
+            }
+            ctx.fill();
+          }
+          ctx.shadowBlur = 0;
+        }
+      }
+
+      const systems = canvases.map(c => new ParticleSystem(c));
+      function resizeAll() { systems.forEach(s => s.init()); }
+
+      window.addEventListener('resize', () => {
+        if (window.__lowPowerMode) return;
+        resizeAll();
+      }, { passive: true });
+
+      let t0 = performance.now();
+      let running = false;
+      let rafId = 0;
+
+      function tick(now) {
+        if (!running || window.__lowPowerMode) { running = false; rafId = 0; return; }
+        const t = (now - t0) / 1000;
+        systems.forEach(s => {
+          const slide = s.canvas.closest('.slide');
+          const rect = slide ? slide.getBoundingClientRect() : null;
+          const onscreen = rect && rect.right > 0 && rect.left < window.innerWidth;
+          if (onscreen) { s.update(t); s.draw(t); }
+        });
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function start() {
+        if (running || window.__lowPowerMode) return;
+        resizeAll();
+        t0 = performance.now();
+        running = true;
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function stop() {
+        running = false;
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = 0;
+        systems.forEach(s => { if (s.ctx) s.ctx.clearRect(0, 0, s.w, s.h); });
+      }
+
+      window.addEventListener('swiss-low-power-change', e => { e.detail.on ? stop() : start(); });
+      start();
+    })();
+  </script>
 ```
 
 ---
@@ -739,18 +1110,20 @@ uv run --with playwright --with reportlab --with pillow python ~/.gemini/config/
 
 ---
 
-## 八、全案交付与生成前自检清单 (The 12-Point Pre-flight Checklist)
+## 八、全案交付与生成前自检清单 (The 14-Point Pre-flight Checklist)
 
 每次在向用户交付成果前，必须逐项对照检查：
 1. [ ] **半角空格排版核对**：中日文文本与数字、英文字母交界处是否全局统一插入了半角空格（如 `Matter 1.6`、`ESP32-C5`、`< 0.5 秒`、`2.4 / 5 GHz`）？
 2. [ ] **图解优先核对**：复杂协议协同、状态机流转是否强制采用了高对比 Native HTML/CSS 流程卡片或清晰 Mermaid？是否杜绝了通篇纯文字堆砌？
-3. [ ] **图片大小与格式对称**：模组图片高度是否在 `140px~180px` 之间？开发板特写是否在 `190px~240px` 之间？双方对比格式是否对称一致（芯片对芯片、板子对板子）？
-4. [ ] **画布通透性（无外框）**：页面最外层是否彻底去除了生硬厚重的外边框？是否保持了开放大气的暗黑空间感？
-5. [ ] **展示框留白核对**：硬件展示框是否彻底去除了 `flex: 1`？上下留白是否紧凑收紧（上边距 0.6vh~1vh）？
-6. [ ] **字号阶梯核对**：是否有任何文本低于 `max(12.5px, 0.82vw)`？规格参数、尺寸、容量等是否清晰可见？
-7. [ ] **Humanizer 语气与用词核对**：是否清除了中式生硬直译（如「下発」$\to$「配信/送信」，「配網」$\to$「コミッショニング」）？是否彻底去除了「完全〜」等 AI 虚夸词？
-8. [ ] **硬件时效与生态定位**：新芯片（如 C5）已出官方板时是否直接呈现官方板（杜绝用 C6 占位借代）？是否准确区分了原厂 DevKit 与 M5Stack 等客户快速体验生态套件？
-9. [ ] **双模视效与快捷键**：封面/封底是否配备了流光背景？是否支持按 `B` 键随时在动态/静止模式间切换？
-10. [ ] **自包含单文件发布版**：是否通过 `inline_assets.py` 生成了 `*_standalone.html` 并验证脱离文件夹后图片 100% 可见？
-11. [ ] **1080p PDF 导出**：是否通过 `export_pdf.py` 自动化导出了 1920×1080 的纯净演示文档？
-12. [ ] **演讲稿与技术手册配套**：是否配备了按 300~340 字/分严密控时的演讲稿（`speech_script_ja.md`）以及具备 Datasheet 硬核事实核验的白皮书（`slides_explanation_zh.md`）？
+3. [ ] **底栏无画蛇添足打补丁**：是否彻底排除了卡片底部无意义的次级拼贴横条/打补丁细框？主卡片是否纵向自然拉伸（`flex: 1`）、呼吸感充足？
+4. [ ] **图片大小与无框化整合**：模组图片高度是否在 `140px~180px` 之间？开发板特写是否在 `190px~240px` 之间？实物图片是否去除了繁琐的硬质 `.hw-box` 框中框，自然融入卡片？
+5. [ ] **画布通透性（无外框）**：页面最外层是否彻底去除了生硬厚重的外边框？是否保持了开放大气的暗黑空间感？
+6. [ ] **展示框留白核对**：硬件展示卡片上下留白是否紧凑收紧（上边距 0.6vh~1.2vh）？
+7. [ ] **字号阶梯核对**：是否有任何文本低于 `max(12.5px, 0.82vw)`？规格参数、尺寸、容量等是否清晰可见？
+8. [ ] **Humanizer 语气与用词核对**：是否清除了中式生硬直译（如「下発」$\to$「配信/送信」，「配網」$\to$「コミッショニング」）？是否彻底去除了「完全〜」等 AI 虚夸词？
+9. [ ] **硬件时效与生态定位**：新芯片（如 C5）已出官方板时是否直接呈现官方板（杜绝用 C6 占位借代）？是否准确区分了原厂 DevKit 与 M5Stack 等客户快速体验生态套件？
+10. [ ] **ESC 概览矩阵核对**：是否完整实装了 `ESC` 键唤起全屏 4×2 缩略卡片索引矩阵？是否支持键盘方向键导航、Enter 键或点击瞬间跳转？当前页是否带有 ACTIVE 高亮角标？
+11. [ ] **动效清晰度与可见性**：封面与封底的粒子背景是否具有高质感、高对比度与科技呼吸感？在暗色与红底背景下是否清晰可见且不干扰文字？`B` 键能否正常一键冻结与恢复？
+12. [ ] **自包含单文件发布版**：是否通过 `inline_assets.py` 生成了 `*_standalone.html` 并验证脱离文件夹后图片 100% 可见？
+13. [ ] **1080p PDF 导出**：是否通过 `export_pdf.py` 自动化导出了 1920×1080 的纯净演示文档？
+14. [ ] **演讲稿与技术手册配套**：是否配备了按 300~340 字/分严密控时的演讲稿（`speech_script_ja.md`）以及具备 Datasheet 硬核事实核验的白皮书（`slides_explanation_zh.md`）？
