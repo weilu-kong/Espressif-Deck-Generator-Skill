@@ -6,7 +6,7 @@ Usage:
   uv run --with pyyaml python scripts/render_deck.py deck.yaml -o output/deck.html
 """
 from __future__ import annotations
-import argparse, html, json, re, sys, shutil, hashlib
+import argparse, base64, html, json, re, sys, shutil, hashlib
 from pathlib import Path
 from string import Template
 
@@ -44,6 +44,24 @@ def list_items(items, css="bullets"):
     return f'<ul class="{css}">' + "".join(f"<li>{esc(i)}</li>" for i in items) + "</ul>"
 
 
+_BRAND_DATA = None
+
+def brand_data():
+    """Return embedded official Espressif logo variants for dark and accent slides."""
+    global _BRAND_DATA
+    if _BRAND_DATA is None:
+        base = ROOT / "assets" / "branding"
+        def as_data_uri(name: str) -> str:
+            raw = (base / name).read_bytes()
+            payload = base64.b64encode(raw).decode("ascii")
+            return f"data:image/svg+xml;base64,{payload}"
+        _BRAND_DATA = {
+            "dark": as_data_uri("espressif-logo-dark.svg"),
+            "white": as_data_uri("espressif-logo-white.svg"),
+        }
+    return _BRAND_DATA
+
+
 def heading(slide):
     eyebrow = f'<div class="eyebrow">{esc(slide.get("eyebrow"))}</div>' if slide.get("eyebrow") else ""
     subtitle = f'<div class="slide-subtitle">{esc(slide.get("subtitle"))}</div>' if slide.get("subtitle") else ""
@@ -64,11 +82,17 @@ def source_html(slide):
 
 
 def chrome(i, total, deck_meta):
-    label = deck_meta.get("kicker") or deck_meta.get("title") or "ESPRESSIF SYSTEMS"
+    label = deck_meta.get("kicker") or deck_meta.get("title") or "TECH PROPOSAL"
+    logos = brand_data()
     return (
         '<div class="chrome">'
-        '<div class="brand-mark"><span class="brand-dot"></span><span>ESPRESSIF</span>'
-        f'<span style="opacity:.42;font-weight:500">{esc(label)}</span></div>'
+        '<div class="brand-mark">'
+        '<span class="brand-logo-lockup">'
+        f'<img class="brand-logo brand-logo-on-dark" src="{logos["dark"]}" alt="Espressif Systems">'
+        f'<img class="brand-logo brand-logo-on-accent" src="{logos["white"]}" alt="Espressif Systems">'
+        '</span>'
+        f'<span class="brand-context">{esc(label)}</span>'
+        '</div>'
         f'<div class="page-num">{i:02d} / {total:02d}</div>'
         '</div>'
     )
@@ -121,7 +145,7 @@ def render_slide(slide, i, total, deck_meta):
         for key in ("company", "presenter", "date"):
             val = slide.get(key) or deck_meta.get(key if key != "presenter" else "author")
             if val: presenter_parts.append(f"<div>{esc(val)}</div>")
-        presenter = '<div class="presenter">' + "".join(presenter_parts) + '</div>' if presenter_parts else ""
+        presenter = '<div class="presenter" data-anim="d4">' + "".join(presenter_parts) + '</div>' if presenter_parts else ""
         data = {**common, "eyebrow": esc(slide.get("eyebrow") or deck_meta.get("kicker") or "TECHNOLOGY UPDATE"), "title": text_html(slide.get("title")), "subtitle": text_html(slide.get("subtitle") or ""), "presenter": presenter}
         template = "cover.html"
     elif stype == "section":
@@ -220,7 +244,21 @@ def build_html(spec, output: Path):
 <html lang="{esc(lang)}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title>
 <style>{theme}\n{components}</style>
 <style media="print">{print_css}</style></head>
-<body><div id="viewport"><div id="deck-stage"><main id="deck">{rendered}</main></div></div><div id="nav-hint">← → navigate · B motion</div>
+<body><div id="viewport"><div id="deck-stage"><main id="deck">{rendered}</main></div></div>
+<div id="nav-hint">ESC overview · ← → navigate · B motion</div>
+<div id="overview-modal" class="overview-modal" aria-hidden="true">
+  <div class="overview-container">
+    <div class="overview-header">
+      <div class="overview-heading">
+        <span class="overview-kicker">OVERVIEW MATRIX</span>
+        <span class="overview-title">スライド全画面一覧</span>
+        <span class="overview-helper">[ESC] またはカードクリックで移動</span>
+      </div>
+      <button id="overview-close" class="overview-close-btn" type="button" aria-label="閉じる">× ESC 閉じる</button>
+    </div>
+    <div class="overview-grid" id="overview-grid"></div>
+  </div>
+</div>
 <script>{js}</script></body></html>'''
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(doc, encoding="utf-8")
