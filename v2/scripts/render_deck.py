@@ -81,8 +81,12 @@ def source_html(slide):
     return f'<div class="footer-source">Source: {esc(text)}</div>'
 
 
-def chrome(i, total, deck_meta):
-    label = deck_meta.get("kicker") or deck_meta.get("title") or "TECH PROPOSAL"
+def chrome(i, total, deck_meta, slide_type=None):
+    if slide_type == "cover":
+        date = deck_meta.get("date") or ""
+        label = deck_meta.get("cover_label") or ("TECH PROPOSAL" + (f" · {date}" if date else ""))
+    else:
+        label = deck_meta.get("kicker") or deck_meta.get("title") or "ESPRESSIF SYSTEMS"
     logos = brand_data()
     return (
         '<div class="chrome">'
@@ -138,7 +142,7 @@ def product_card(p):
 def render_slide(slide, i, total, deck_meta):
     stype = slide.get("type")
     sid = safe_id(slide.get("id"), "") if slide.get("id") else f"slide-{i:02d}-{safe_id(slide.get("title", ""), "untitled")}"
-    common = {"slide_id": sid, "chrome": chrome(i, total, deck_meta), "heading": heading(slide), "source": source_html(slide)}
+    common = {"slide_id": sid, "chrome": chrome(i, total, deck_meta, stype), "heading": heading(slide), "source": source_html(slide)}
 
     if stype == "cover":
         presenter_parts = []
