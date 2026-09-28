@@ -41,12 +41,16 @@ description: 生成、重构、排版和交付 Espressif 风格的 HTML/Web 演�
 - 正文不得为了塞内容而缩成投影不可读的小字；优先删减、拆页或换 archetype。
 - 同类对比必须保持一致视觉形式：芯片对芯片、模组对模组、开发板对开发板。
 - 不要在最终 HTML 上堆积大量一次性 inline CSS 来“补洞”；优先修改 deck spec、component 或 theme。
+- 品牌区必须使用 `assets/branding/` 中的官方 Espressif 横向 Logo，不得再用 CSS 圆点、普通字体或自绘近似图代替。
+- Web Deck 默认必须支持 `Esc` 打开全局 Overview Matrix，可点击卡片跳页并高亮当前页；页数变化时由 DOM 动态生成，不手写固定 8 页。
+- Cover 默认使用 Espressif 品牌红色体系与克制的粒子/星座动效；`B` 键或 `prefers-reduced-motion` 必须可以冻结动效，且不得影响 PDF/截图稳定性。
 
 ## 4. Default Design
 
 默认采用：
 - 1920×1080 logical canvas，16:9，整体等比缩放；
-- Espressif dark visual system + 克制红色 accent；
+- Espressif dark visual system + 官方品牌红 `#E60012`；Cover 使用 `#CC0010 → #E60012 → #B3000D` 的红色渐变；
+- 官方 Espressif Logo lockup：红色 Cover 用全白版本，深色内容页用红色 mark + 白色 wordmark；
 - 瑞士网格与清晰的标题层级；
 - 视觉优先，复杂关系用原生 HTML/CSS 架构图或流程图；
 - 硬件展示框紧凑，大图优先，避免无意义留白；
@@ -58,8 +62,7 @@ description: 生成、重构、排版和交付 Espressif 风格的 HTML/Web 演�
 ## 5. Optional Enhancements
 
 以下不是硬性要求，只有在内容和现场环境合适时使用：
-- ASCII / 光效动态背景；
-- `B` 键动态/静态切换；
+- Cover 之外的 ASCII / 光效动态背景；
 - 特殊转场；
 - 逐页演讲稿；
 - 深度技术解析与 Q&A；
@@ -83,7 +86,7 @@ python3 scripts/render_deck.py examples/lightning-talk.yaml -o output/deck.html
 uv run --with pyyaml python scripts/render_deck.py examples/lightning-talk.yaml -o output/deck.html
 ```
 
-Renderer 负责尺寸、CSS、字体层级、grid、card、图片 fit、Logo/brand mark、页码、导航和缩放。Agent 主要负责内容、故事线、slide type 与 visual intent。
+Renderer 负责尺寸、CSS、字体层级、grid、card、图片 fit、官方 Logo lockup、页码、导航、`Esc` Overview Matrix、Cover 动效和缩放。Agent 主要负责内容、故事线、slide type 与 visual intent。
 
 ## 7. Slide Archetypes
 
@@ -228,5 +231,7 @@ python3 scripts/make_contact_sheet.py output/deck.html -o output/deck_contact_sh
 - [ ] 架构关系不是纯文字堆砌；
 - [ ] Validator 无 blocking errors；
 - [ ] standalone 无意外本地依赖；
+- [ ] `Esc` 可打开 Overview Matrix，卡片跳转/当前页高亮正常；
+- [ ] Cover Logo 为官方版本，红色与动效符合 V2 品牌基线，`B` 可冻结动效；
 - [ ] PDF 模式与命名准确；
 - [ ] 只生成用户需要的交付物。

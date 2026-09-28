@@ -17,12 +17,21 @@
 - `--line: rgba(255,255,255,.15)`
 - `--text: #f7f8fb`
 - `--muted: rgba(247,248,251,.68)`
-- `--accent: #e73536`
-- `--accent-bright: #ff5a5c`
+- `--accent: #e60012`
+- `--accent-bright: #ff3b30`
+- `--accent-dark: #b8000e`
 - `--success: #61d29b`
 - `--blue: #6db7ff`
 
-颜色可由项目主题覆盖，但同一 Deck 内需保持一致。
+Cover 默认背景：`linear-gradient(135deg, #cc0010 0%, #e60012 55%, #b3000d 100%)`。这是 V2 的品牌红基线；只有项目有明确主题要求时才覆盖。
+
+## Branding & cover interaction
+- 必须使用官方 Espressif 横向 Logo lockup，禁止用圆点、文字或近似图形重画。
+- 红色 Cover：全白 Logo；深色内容页：红色 mark + 白色 wordmark。
+- Logo 保持原比例，不拉伸、不描边、不拆分 mark / wordmark。
+- Cover 默认加入低密度粒子/连线动效，视觉强度必须低于正文；粒子使用固定 seed，保证每次加载构图一致。
+- `B` 切换 `motion-off` 时冻结动效；`prefers-reduced-motion` 同样冻结。
+- `Esc` 打开 Overview Matrix：桌面默认 4 列、当前页红色描边、支持卡片点击和方向键导航。Overview 卡片从实际 DOM 动态生成，因此不依赖固定页数。
 
 ## Typography
 以投影可读性为基准，不为了塞内容无底线缩字。
@@ -71,10 +80,10 @@
 优先使用 HTML/CSS 原生 node + connector，以获得清晰文本。Mermaid 适合较复杂图，但必须控制字号和节点数量。
 
 ## Motion
-动效是 optional enhancement。
+Cover 的克制粒子动效属于默认品牌体验；其他动效仍是 optional enhancement。
 - 动效不得影响截图/PDF 稳定性。
-- `body.motion-off` 时必须可完全停止背景动画和 transition。
-- PDF 导出前由脚本自动关闭 transition/animation。
+- `body.motion-off` 时必须冻结背景动画并关闭 transition。
+- PDF 导出前由脚本自动进入 `motion-off`，因此 Cover 粒子保持静态而不是随机漂移。
 
 ## Dense slides
 如果一页需要：

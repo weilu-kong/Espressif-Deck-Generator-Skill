@@ -2,6 +2,8 @@
 
 A Gemini/Agent Skill for generating consistent Espressif-style HTML/Web presentations with a structured Deck Spec, deterministic renderer and browser validation.
 
+V2 now keeps its concise, content-first layout while restoring the strongest presentation details from V1: official Espressif logo lockups, the brand-correct red cover, a restrained animated particle/constellation background, and an `Esc` overview matrix for instant slide navigation.
+
 ## Install / replace
 
 The skill directory name should be `espressif-deck-generator` and must contain `SKILL.md` at its root. Gemini CLI currently discovers user skills under `~/.gemini/skills/` or `~/.agents/skills/`, and workspace skills under `.gemini/skills/` / `.agents/skills/`.
@@ -12,6 +14,13 @@ rm -rf ~/.gemini/skills/espressif-deck-generator
 cp -R espressif-deck-generator ~/.gemini/skills/
 ```
 Then reload/list skills in Gemini CLI.
+
+## Presentation controls
+- `Esc`: open/close the slide overview matrix.
+- Arrow keys / PageUp / PageDown / Space: navigate.
+- Home / End: first / last slide.
+- `B`: freeze/unfreeze motion.
+- Overview cards can be clicked directly; current slide is highlighted.
 
 ## Render
 ```bash
