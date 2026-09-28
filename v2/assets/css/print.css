@@ -6,3 +6,5 @@ html, body { width: auto; height: auto; overflow: visible; background: #000; }
 .slide { width: 1920px !important; height: 1080px !important; page-break-after: always; break-after: page; overflow: hidden; }
 .slide:last-child { page-break-after: auto; break-after: auto; }
 #nav-hint, #overview-modal { display: none !important; }
+
+[data-anim] { opacity: 1 !important; transform: none !important; }
