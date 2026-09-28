@@ -289,7 +289,7 @@
           window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const dt = this.last ? t - this.last : 16.67;
         if (!frozen) this.update(dt, t);
-        this.draw(t);
+        this.draw(frozen ? 0 : t);
       }
       this.last = t;
       requestAnimationFrame(this.frame);
