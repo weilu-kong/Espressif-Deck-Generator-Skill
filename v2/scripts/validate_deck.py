@@ -53,6 +53,40 @@ def main():
           });
           return out;
         }""", args.min_font)
+        interaction = page.evaluate("""() => {
+          const slides=[...document.querySelectorAll('.slide')];
+          const modal=document.getElementById('overview-modal');
+          const cover=document.querySelector('.slide[data-slide-type="cover"]');
+          const logoCount=document.querySelectorAll('.brand-logo-lockup img.brand-logo').length;
+          const coverCanvas=!!cover?.querySelector('canvas.tech-particles-bg');
+
+          window.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+          const cards=[...document.querySelectorAll('#overview-grid .overview-card')];
+          const overviewOpen=!!modal?.classList.contains('active') && modal?.getAttribute('aria-hidden')==='false';
+          const currentCards=cards.filter(c=>c.classList.contains('current')).length;
+          window.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));
+          const overviewClosed=!!modal && !modal.classList.contains('active') && modal.getAttribute('aria-hidden')==='true';
+
+          const motionBefore=document.body.classList.contains('motion-off');
+          window.dispatchEvent(new KeyboardEvent('keydown',{key:'b',bubbles:true,cancelable:true}));
+          const motionAfter=document.body.classList.contains('motion-off');
+          const motionToggled=motionBefore !== motionAfter;
+          if (motionToggled) {
+            window.dispatchEvent(new KeyboardEvent('keydown',{key:'b',bubbles:true,cancelable:true}));
+          }
+
+          return {
+            overview_present: !!modal,
+            overview_open: overviewOpen,
+            overview_closed: overviewClosed,
+            overview_cards: cards.length,
+            overview_current_cards: currentCards,
+            official_logo_images: logoCount,
+            cover_canvas: coverCanvas,
+            motion_toggle: motionToggled,
+            slides: slides.length
+          };
+        }""")
         browser.close()
 
     for x in inline_stats.get("missing", []): errors.append({"type":"missing-local-asset","path":x})
@@ -64,13 +98,25 @@ def main():
     for x in result["missingAlt"]: warnings.append({"type":"missing-alt", **x})
     if console_errors: errors.extend({"type":"console-error","message":x} for x in console_errors)
     if page_errors: errors.extend({"type":"page-error","message":x} for x in page_errors)
+    if not interaction["overview_present"]: errors.append({"type":"missing-overview-modal"})
+    if not interaction["overview_open"]: errors.append({"type":"overview-esc-open-failed"})
+    if not interaction["overview_closed"]: errors.append({"type":"overview-esc-close-failed"})
+    if interaction["overview_cards"] != interaction["slides"]:
+        errors.append({"type":"overview-card-count-mismatch","cards":interaction["overview_cards"],"slides":interaction["slides"]})
+    if interaction["overview_current_cards"] != 1:
+        errors.append({"type":"overview-current-state-invalid","count":interaction["overview_current_cards"]})
+    if interaction["official_logo_images"] < interaction["slides"] * 2:
+        errors.append({"type":"official-logo-lockup-missing","images":interaction["official_logo_images"],"expected_min":interaction["slides"] * 2})
+    if not interaction["cover_canvas"]: errors.append({"type":"cover-particle-canvas-missing"})
+    if not interaction["motion_toggle"]: errors.append({"type":"motion-toggle-failed"})
     ids = result["ids"]
     if any(not x for x in ids) or len(ids) != len(set(ids)):
         errors.append({"type":"invalid-slide-ids","ids":ids})
     if any(not x for x in result["pageNums"]): warnings.append({"type":"missing-page-number"})
 
     report={"passed": not errors, "slides": result["slides"], "errors": errors, "warnings": warnings,
-            "summary":{"broken_images":len(result["brokenImages"]),"overflows":len(result["overflows"]),"console_errors":len(console_errors),"page_errors":len(page_errors),"small_text":len(result["smallText"]),"missing_alt":len(result["missingAlt"])}}
+            "interaction": interaction,
+            "summary":{"broken_images":len(result["brokenImages"]),"overflows":len(result["overflows"]),"console_errors":len(console_errors),"page_errors":len(page_errors),"small_text":len(result["smallText"]),"missing_alt":len(result["missingAlt"]),"interaction_errors":sum(1 for e in errors if e["type"].startswith(("overview-","missing-overview","official-logo","cover-particle","motion-toggle")))}}
     args.report.parent.mkdir(parents=True, exist_ok=True)
     args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report["summary"], ensure_ascii=False))
